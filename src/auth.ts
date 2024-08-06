@@ -30,15 +30,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {}
       },
       authorize: async (credentials) => {
-        const user = await getUserByEmail(credentials.email as string)
-        if (user.password !== credentials.password) {
-          throw new CredentialsSignin('密码错误')
-        }
-        return {
-          id: user.id?.toString(),
-          name: user.name,
-          email: user.email,
-          image: user.picture,
+        try{
+          const user = await getUserByEmail(credentials.email as string)
+          if (user.password !== credentials.password) {
+            throw new CredentialsSignin('密码错误')
+          }
+          return {
+            id: user.id?.toString(),
+            name: user.name,
+            email: user.email,
+            image: user.picture,
+          }
+        }catch(e){
+          throw new CredentialsSignin('预料之外的事情发生了')
         }
       },
     }),

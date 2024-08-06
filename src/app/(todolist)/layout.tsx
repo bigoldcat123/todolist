@@ -1,15 +1,21 @@
 import { auth, signOut } from "@/auth";
 import Image from "next/image"
+import Link from "next/link";
+import SideBar from "./SideBar";
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
 
     const user = (await auth())?.user
+    
     return <>
 
         <div className=" h-full flex">
-            <div className=" w-52 text-xl text-red-500 font-m">this is the damn header</div>
+            <div className=" w-52">
+                <div>head</div>
+                <SideBar></SideBar>
+            </div>
             <div className="  flex-1 flex flex-col">
-                <div className="min-h-24  flex justify-end">
+                <div className="min-h-20  flex justify-end border-b-2 border-gray-300">
                     <div>{user?.name}</div>
                     <form action={async (formdata) => {
                         'use server'
@@ -21,7 +27,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                         <Image src={user?.image as string} alt='' fill></Image>
                     </div>
                 </div>
-                <div className=" flex-1">
+                <div className=" flex-1 p-4 overflow-auto">
                     {children}
                 </div>
             </div>

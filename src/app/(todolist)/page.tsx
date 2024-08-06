@@ -1,24 +1,25 @@
-import { auth, signOut } from "@/auth";
+
 import Image from "next/image";
 import Link from "next/link";
+import TimePicker from "./component/TimePicker";
 
-export default async function Home() {
-  const u =  await auth()
-  
+export default function Home() {
   return (
     <>
-      <div>
-        head -----
-        {u?.user?.id} + {u?.user.name} + {u?.user?.email} + {u?.user.address}+{u?.user.image}
-        <div className=" relative w-16 aspect-square">
-
-        <Image src={u?.user?.image as string} alt="abc" fill></Image>
-        </div>
-
-      </div>
-      <div>
-        <Link className=" font-m" href={'/information'}>information</Link>
-      </div>
+      <ul className=" list-disc">
+        <li className="">
+          <form action="">
+            <div>
+              <input type="text" placeholder="title" className=" focus:outline-none bg-background" />
+            </div>
+            <div>des</div>
+            <div className=" flex">
+              <div> <input className=" bg-background" type='date' /></div> <div><input className=" bg-background" type='time' /></div>
+            </div>
+          </form>
+        </li>
+      </ul>
+      <TimePicker></TimePicker>
     </>
   );
 }
