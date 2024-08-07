@@ -25,3 +25,12 @@ body {
   background: var(--background);
   font-synthesis: none;
 }
+
+.anim {
+  animation: fadeout 0.5s forwards;
+}
+@keyframes fadeout {
+  0% {opacity: 1}
+  100% {opacity: 0;}
+
+}

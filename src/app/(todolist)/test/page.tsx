@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
+  //delay 1000
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+
   const u =  await auth()
   
   return (

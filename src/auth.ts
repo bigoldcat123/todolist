@@ -65,8 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session
     },
     jwt: async ({ token, user, account, profile, trigger }) => {
-      console.log('---------------',trigger);
-      if (trigger == 'signIn') {
+      if (trigger == 'signIn' && profile) {
         const u = await getUserByGithubId(profile?.id as string)
         if (u) {
           token.sub = u.id?.toString()
@@ -81,8 +80,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.sub = u!.id?.toString()
         }
       }
-      console.log(profile);
-      
       return token
     }
   }
