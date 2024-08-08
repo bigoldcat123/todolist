@@ -10,8 +10,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     return <>
 
         <div className=" h-full flex">
-            <div className=" w-52">
-                <div>head</div>
+            <div className=" w-[17.5rem]">
                 <SideBar></SideBar>
             </div>
             <div className="  flex-1 flex flex-col">

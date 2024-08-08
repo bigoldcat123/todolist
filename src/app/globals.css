@@ -4,18 +4,20 @@
 
 :root {
 
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff;
-    --foreground: #171717;
+
+    --background: #0a0a0a;
+    --foreground: #ededed;
   }
 }
 
-html,body{
+html,
+body {
   height: 100%;
   overflow: hidden;
 }
@@ -29,8 +31,14 @@ body {
 .anim {
   animation: fadeout 0.5s forwards;
 }
+
 @keyframes fadeout {
-  0% {opacity: 1}
-  100% {opacity: 0;}
+  0% {
+    opacity: 1
+  }
+
+  100% {
+    opacity: 0;
+  }
 
 }

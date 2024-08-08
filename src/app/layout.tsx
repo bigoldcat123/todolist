@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Montserrat } from 'next/font/google'
-import { auth, signOut } from "@/auth";
-import Image from "next/image";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -16,6 +14,11 @@ const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
 });
+const chinese = localFont({
+  src:'./fonts/chinese.ttf',
+  variable: "--font-chinese",
+  // weight:'100 200 300 400 500 600 700 800 900'
+})
 const m = Montserrat({ subsets: ['latin'], variable: '--font-montserrat' })
 
 export const metadata: Metadata = {
@@ -30,7 +33,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${m.variable} ${edu.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${m.variable} ${edu.variable} ${chinese.className}`}>
         {children}
       </body>
     </html>

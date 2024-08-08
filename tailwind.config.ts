@@ -17,6 +17,7 @@ const config: Config = {
         mono: ["var(--font-geist-mono)"],
         m:["var(--font-montserrat)"],
         edu:["var(--font-edu)"],
+        chinese:["var(--font-chinese)"]
       },
     },
   },

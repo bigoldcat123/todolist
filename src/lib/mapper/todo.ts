@@ -7,6 +7,9 @@ export type Sys_Todo = {
     start_date?:Date
     start_time?:string
     user_id?:number
+    type?:string,
+    list_id?:number,
+    tag_name?:string
 }
 type Sys_Todo_q = Sys_Todo & RowDataPacket
 
