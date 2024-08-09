@@ -5,6 +5,7 @@ import { CredentialsSignin } from "next-auth"
 import { redirect } from "next/navigation"
 import db from "./db"
 import { Sys_Todo, todo_add, todo_list } from "./mapper/todo"
+import { list_add, list_list, list_lists_detail } from "./mapper/list"
 export async function getMyInformation() {
     const information = await auth()
     console.log(information);
@@ -53,3 +54,23 @@ export async function submit(init:Sys_Todo,formdata:FormData) {
 export async function todolist(){
     return await todo_list(Number.parseInt((await auth())?.user.id as string))
 } 
+
+export async function list_lists() {
+    return await list_lists_detail(await getCurrentUserId())
+}
+export async function add_lists(init:{message?:string},formData:FormData) {
+    await list_add({
+        'list_name':formData.get('list_name') as string,
+        'user_id':await getCurrentUserId()
+    })
+    return {
+        message:'ok'
+    }
+}
+
+async function getCurrentUser(){
+    return (await auth())?.user
+}
+async function getCurrentUserId(){
+    return Number.parseInt((await auth())?.user.id as string)
+}

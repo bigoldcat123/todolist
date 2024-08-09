@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import Search from "./component/SideBars/Search"
 import CategoryItem from "./component/SideBars/CategoryItem"
 import today from '@/app/(todolist)/component/SideBars/today.svg'
@@ -14,52 +14,84 @@ import ListItem from "./component/SideBars/ListItem"
 import Tag from "./component/SideBars/Tag"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import AddListDialog from "./component/SideBars/AddListDialog"
+import { Sys_List, Sys_list_detail } from "@/lib/mapper/list"
+import { list_lists } from "@/lib/action"
 export default function SideBar() {
 
     const [tagNames, setTagNames] = useState<string[]>([])
     const [exceptTagNames, setExceptTagNames] = useState<string[]>([])
-    function handleClick(tagName:string) {
-        if(tagName == '所有标签'){
-            if(tagNames.includes(tagName)) {
+    function handleClick(tagName: string) {
+
+        if (tagName == '所有标签') {
+            if (tagNames.includes(tagName)) {
                 setTagNames([])
                 setExceptTagNames([tagName])
                 return
             }
-            if(exceptTagNames.includes(tagName)) {
+            if (exceptTagNames.includes(tagName)) {
                 setTagNames([tagName])
                 setExceptTagNames([])
                 return
             }
             setTagNames([tagName])
             setExceptTagNames([])
-        }else{
-            if(tagNames.includes('所有标签') || exceptTagNames.includes('所有标签')) {
+        } else {
+            if (tagNames.includes('所有标签') || exceptTagNames.includes('所有标签')) {
                 setTagNames([tagName])
                 setExceptTagNames([])
                 return
             }
-            if(tagNames.includes(tagName)) {
+            if (tagNames.includes(tagName)) {
                 setTagNames(tagNames.filter((value) => value != tagName))
-                setExceptTagNames([...exceptTagNames,tagName])
+                setExceptTagNames([...exceptTagNames, tagName])
                 return
             }
-            if(exceptTagNames.includes(tagName)) {
+            if (exceptTagNames.includes(tagName)) {
+                // debugger
                 setExceptTagNames(exceptTagNames.filter((value) => value != tagName))
-                setTagNames([...tagNames,tagName])
+                if (tagNames.length == 0 && exceptTagNames.length == 1) {
+                    setTagNames([...tagNames, tagName])
+                }
+                    
                 return
             }
-            setTagNames([...tagNames,tagName])
+            setTagNames([...tagNames, tagName])
         }
     }
     const router = useRouter()
+    const pathname = usePathname()
+    const searchParam = useSearchParams()
     useEffect(() => {
-        if(tagNames.length == 0 && exceptTagNames.length == 0) {
+        if (!pathname.startsWith('/tag')) {
+            setTagNames([])
+            setExceptTagNames([])
+        } else {
+            // debugger
+            const path = pathname.replace('/tag/', '').replace('/tag', '')
+            const tagNames = path.split('/')
+            const v = tagNames.map(x => decodeURIComponent(x)).filter(x=>x!=='')
+            setTagNames(v)
+            setExceptTagNames(searchParam.get('exceptTagnames')?.split('-') || [])
+        }
+    }, [pathname])
+    useEffect(() => {
+        if (tagNames.length == 0 && exceptTagNames.length == 0) {
             return
         }
         const url = '/tag/' + tagNames.join('/')
-        const queryParam = exceptTagNames.length > 0 ? `?exceptTagnames=${exceptTagNames.join('-')}` :''
+        const queryParam = exceptTagNames.length > 0 ? `?exceptTagnames=${exceptTagNames.join('-')}` : ''
         router.push(url + queryParam)
-    },[tagNames,exceptTagNames])
+    }, [tagNames, exceptTagNames])
+    const [showAddListDialog, setShowAddListDialog] = useState(false)
+
+    const [lists, setLists] = useState<Sys_list_detail[]>([])
+
+    useEffect(() => {
+        list_lists().then(res => {
+            setLists(res)
+        })
+    }, [])
     return (
         <>
             <div className=" h-full bg-red-100 flex flex-col justify-between p-2">
@@ -74,12 +106,12 @@ export default function SideBar() {
                         <CategoryItem href="/flag" bg="bg-black" title="旗标" icon={qi} ></CategoryItem>
                         <CategoryItem href="/finish" bg="bg-gray-400" title="完成" icon={wancheng} ></CategoryItem>
                     </div>
-                    <div className=" overflow-auto h-[280px] " style={{scrollbarColor:'rebeccapurple #fee2e2'}}>
+                    <div className=" overflow-auto h-[280px] " style={{ scrollbarColor: 'rebeccapurple #fee2e2' }}>
                         <div className="text-gray-400 p-3 ">
                             <div className="  text-[0.65rem] mb-2 ">我的列表</div>
-                            <ListItem href="/list/1"></ListItem>
-                            <ListItem href="/list/2"></ListItem>
-                            <ListItem href="/list/3"></ListItem>
+                            {lists.map(((value, index) => {
+                                return <ListItem key={index} href={`/list/${value.id}`} count={value.count ?? 0} name={value.list_name ?? 'undefined'}></ListItem>
+                            }))}
                         </div>
                         <div className="text-gray-400 p-3">
                             <div className="  text-[0.65rem] ">标签</div>
@@ -94,10 +126,14 @@ export default function SideBar() {
                         </div>
                     </div>
                 </div>
-                {tagNames}
                 <div className="text-[0.8rem]">
-                    <button>+ 添加列表</button>
+                    <button onClick={() => setShowAddListDialog(true)}>+ 添加列表</button>
                 </div>
+                {showAddListDialog && <AddListDialog onCancle={() => setShowAddListDialog(false)} onConfirm={() => {
+                    setShowAddListDialog(false); list_lists().then(res => {
+                        setLists(res)
+                    })
+                }}></AddListDialog>}
             </div>
         </>
     )

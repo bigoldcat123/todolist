@@ -28,8 +28,8 @@ body {
   font-synthesis: none;
 }
 
-.anim {
-  animation: fadeout 0.5s forwards;
+.anima-fadein {
+  animation: fadein 0.5s forwards;
 }
 
 @keyframes fadeout {
@@ -41,4 +41,14 @@ body {
     opacity: 0;
   }
 
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

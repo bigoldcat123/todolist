@@ -15,7 +15,7 @@ export default function CategoryItem({
     const pathName = usePathname()
     return (
         <div className={`pb-2 h-[4.5rem] ${pathName == href && ' text-white '}`} style={{ flex: '0 0 calc(100% / 2.06)' }}>
-            <Link href={href}>
+            <Link href={href + `?title=${title}&bg=${bg}`}>
                 <div className={`${pathName !== href ? 'bg-gray-300 ' : `${bg}`} rounded-lg h-full  flex p-2 justify-between`}>
                     <div className=' flex flex-col justify-between'>
                         <div className={`${pathName == href ? 'bg-white' : `${bg}`}  w-7  aspect-square rounded-full flex items-center justify-center`}>
