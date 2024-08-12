@@ -9,7 +9,9 @@ export type Sys_Todo = {
     user_id?:number
     type?:string,
     list_id?:number,
-    tag_name?:string
+    tag_name?:string,
+    location?:string,
+    finished?:boolean
 }
 type Sys_Todo_q = Sys_Todo & RowDataPacket
 
@@ -18,6 +20,15 @@ export async function todo_add(todo:Sys_Todo) {
     console.log(todo);
     
     const [res] = await d.query<ResultSetHeader>('INSERT INTO sys_todo SET ?',todo)
+    d.destroy()
+    todo.id = res.insertId
+    return todo
+}
+export async function todo_update(todo:Sys_Todo) {
+    const d = await db()
+    console.log(todo);
+    
+    const [res] = await d.query<ResultSetHeader>('UPDATE sys_todo SET ? WHERE id = ?',[todo,todo.id])
     d.destroy()
     todo.id = res.insertId
     return todo

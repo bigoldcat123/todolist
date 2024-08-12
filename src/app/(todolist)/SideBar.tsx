@@ -76,6 +76,12 @@ export default function SideBar() {
         }
     }, [pathname])
     useEffect(() => {
+        if(searchParam.get('refresh')) {
+            console.log('do refresh as layout---------------------------');
+            
+        }
+    },[searchParam])
+    useEffect(() => {
         if (tagNames.length == 0 && exceptTagNames.length == 0) {
             return
         }
@@ -106,7 +112,7 @@ export default function SideBar() {
                         <CategoryItem href="/flag" bg="bg-black" title="旗标" icon={qi} ></CategoryItem>
                         <CategoryItem href="/finish" bg="bg-gray-400" title="完成" icon={wancheng} ></CategoryItem>
                     </div>
-                    <div className=" overflow-auto h-[280px] " style={{ scrollbarColor: 'rebeccapurple #fee2e2' }}>
+                    <div className=" overflow-auto h-[280px] " style={{ scrollbarColor: 'rebeccapurple #fee2e2'}}>
                         <div className="text-gray-400 p-3 ">
                             <div className="  text-[0.65rem] mb-2 ">我的列表</div>
                             {lists.map(((value, index) => {

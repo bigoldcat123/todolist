@@ -97,7 +97,7 @@ export default function TimePicker({ name, value }: { name?: string, value?: str
     return (
         <>
             <div className=" relative">
-                <div><input ref={ipt} onFocus={() => setShowPicker(true)} type="text" placeholder="pick a date" defaultValue={value} name={name} className=" bg-background focus:outline-none" /></div>
+                <div><input ref={ipt} onFocus={() => setShowPicker(true)} type="text" placeholder="添加日期" defaultValue={value} name={name} className=" bg-background focus:outline-none w-20" /></div>
                 {showPicker && <div ref={picker} className='  z-50 absolute w-72 bg-foreground text-background  '>
                     <div className="flex justify-between">
                         <div className=" ml-3">

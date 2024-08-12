@@ -37,7 +37,7 @@ export async function SigninWithGitHub() {
         await signIn('github')
 }
 
-export async function submit(init:Sys_Todo,formdata:FormData) {
+export async function addTodo(init:Sys_Todo,formdata:FormData) {
     console.log(formdata);
     
     const x= {
@@ -45,6 +45,7 @@ export async function submit(init:Sys_Todo,formdata:FormData) {
         'start_date': !!formdata.get('date') ? new Date(formdata.get('date') as string) : undefined,
         'description': formdata.get('des') as string,
         'title': formdata.get('title') as string,
+        'list_id':1,
         'user_id': Number.parseInt((await auth())?.user.id as string)
     }
    
